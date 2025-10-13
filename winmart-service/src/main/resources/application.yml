@@ -1,0 +1,29 @@
+server:
+  port: 3333
+
+spring:
+  # application
+  application:
+    name: winmart-user-service
+  #DBS
+  datasource:
+    hikari:
+      maximum-pool-size: 20 # Số lượng tối đa kết nối
+      minimum-idle: 5 # Số lượng kết nối tối thiểu trong pool
+    url: jdbc:postgresql://localhost:5432/winmart_db
+    username: exam
+    password: exam123
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    database: postgresql
+    show-sql: true
+    hibernate:
+      ddl-auto: update # Tự động tạo/cập nhật bảng
+    properties:
+      hibernate:
+        format_sql: true
+        use_sql_comments: true
+  # enable virtual threads
+  threads:
+    virtual:
+      enabled: true
