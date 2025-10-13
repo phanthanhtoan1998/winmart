@@ -16,4 +16,8 @@ public class LoginResponse extends BaseDto {
     private String email;
     private String phone;
     private String role;
+    private String accessToken;
+    private String refreshToken;
+    private String tokenType;
+    private Long expiresIn; // in seconds
 }

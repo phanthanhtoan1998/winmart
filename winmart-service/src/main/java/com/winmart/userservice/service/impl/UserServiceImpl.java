@@ -1,6 +1,7 @@
 package com.winmart.userservice.service.impl;
 
 import com.winmart.common.service.impl.BaseServiceImpl;
+import com.winmart.common.util.JwtUtil;
 import com.winmart.userservice.dto.request.CreateUserRequest;
 import com.winmart.userservice.dto.request.LoginRequest;
 import com.winmart.userservice.dto.response.CreateUserResponse;
@@ -9,6 +10,7 @@ import com.winmart.userservice.entity.UserEntity;
 import com.winmart.userservice.repository.UserRepository;
 import com.winmart.userservice.service.UserService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -21,11 +23,16 @@ public class UserServiceImpl extends BaseServiceImpl<UserEntity, CreateUserRespo
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil;
+
+    @Value("${jwt.expiration:86400000}") // 24 hours in milliseconds
+    private Long jwtExpiration;
     
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtUtil jwtUtil) {
         super(userRepository, UserEntity.class, CreateUserResponse.class);
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.jwtUtil = jwtUtil;
     }
 
     @Override
@@ -41,13 +48,21 @@ public class UserServiceImpl extends BaseServiceImpl<UserEntity, CreateUserRespo
             // Check if user already exists
             Optional<UserEntity> existingUser = userRepository.findByEmail(request.getEmail());
             if (existingUser.isPresent()) {
+                log.warn("Registration failed: Email already exists - {}", request.getEmail());
                 return ResponseEntity.badRequest().build();
             }
 
             // Create new user
             UserEntity userEntity = modelMapper.map(request, UserEntity.class);
             userEntity.setPassword(passwordEncoder.encode(request.getPassword()));
+            
+            // Set role if not provided
+            if (userEntity.getRole() == null) {
+                userEntity.setRole(UserEntity.UserRole.CUSTOMER);
+            }
+            
             UserEntity savedUser = userRepository.save(userEntity);
+            log.info("User registered successfully: {}", savedUser.getEmail());
 
             CreateUserResponse response = modelMapper.map(savedUser, CreateUserResponse.class);
             return ResponseEntity.ok(response);
@@ -63,6 +78,7 @@ public class UserServiceImpl extends BaseServiceImpl<UserEntity, CreateUserRespo
             // Find user by email
             Optional<UserEntity> userOptional = userRepository.findByEmail(loginRequest.getEmail());
             if (userOptional.isEmpty()) {
+                log.warn("Login failed: User not found - {}", loginRequest.getEmail());
                 return ResponseEntity.badRequest().build();
             }
 
@@ -70,8 +86,13 @@ public class UserServiceImpl extends BaseServiceImpl<UserEntity, CreateUserRespo
 
             // Verify password
             if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
+                log.warn("Login failed: Invalid password for user - {}", loginRequest.getEmail());
                 return ResponseEntity.badRequest().build();
             }
+
+            // Generate JWT tokens
+            String accessToken = jwtUtil.generateToken(user.getId(), user.getEmail(), user.getRole().name());
+            String refreshToken = jwtUtil.generateRefreshToken(user.getId(), user.getEmail());
 
             // Create login response
             LoginResponse response = LoginResponse.builder()
@@ -80,8 +101,13 @@ public class UserServiceImpl extends BaseServiceImpl<UserEntity, CreateUserRespo
                     .email(user.getEmail())
                     .phone(user.getPhone())
                     .role(user.getRole().name())
+                    .accessToken(accessToken)
+                    .refreshToken(refreshToken)
+                    .tokenType("Bearer")
+                    .expiresIn(jwtExpiration / 1000) // Convert to seconds
                     .build();
 
+            log.info("User logged in successfully: {}", user.getEmail());
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             log.error("Login error: {}", e.getMessage(), e);
