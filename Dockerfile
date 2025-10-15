@@ -28,7 +28,7 @@ RUN addgroup -S spring && adduser -S spring -G spring
 USER spring:spring
 
 # Copy the jar file from build stage
-COPY --from=build /app/winmart-service/target/*.jar app.jar
+COPY --from=build /app/winmart-service/target/winmart-service.jar app.jar
 
 # Expose port
 EXPOSE 3333
