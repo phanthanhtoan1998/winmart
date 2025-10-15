@@ -1,0 +1,44 @@
+# Ignore target folders
+**/target/
+target/
+
+# Ignore IDE files
+.idea/
+*.iml
+.vscode/
+.settings/
+.project
+.classpath
+
+# Ignore git files
+.git/
+.gitignore
+
+# Ignore documentation
+*.md
+!README.md
+
+# Ignore test files
+**/test/
+src/test/
+
+# Ignore logs
+*.log
+logs/
+
+# Ignore OS files
+.DS_Store
+Thumbs.db
+
+# Ignore docker files
+Dockerfile
+.dockerignore
+docker-compose*.yml
+
+# Ignore Postman collections
+*.postman_collection.json
+*.postman_environment.json
+
+# Ignore SQL files
+*.sql
+

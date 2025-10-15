@@ -1,0 +1,90 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres-db:
+    container_name: winmart-postgres
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: winmart_db
+      POSTGRES_USER: winmart
+      POSTGRES_PASSWORD: winmart@2024
+      TZ: Asia/Ho_Chi_Minh
+      PGTZ: Asia/Ho_Chi_Minh
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-database.sql:/docker-entrypoint-initdb.d/01-init.sql
+    networks:
+      - winmart-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U winmart -d winmart_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Winmart Application
+  winmart-app:
+    container_name: winmart-service
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "3333:3333"
+    environment:
+      # Spring profiles
+      SPRING_PROFILES_ACTIVE: docker
+      
+      # Database configuration
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-db:5432/winmart_db
+      SPRING_DATASOURCE_USERNAME: winmart
+      SPRING_DATASOURCE_PASSWORD: winmart@2024
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
+      
+      # JPA configuration
+      SPRING_JPA_DATABASE: postgresql
+      SPRING_JPA_SHOW_SQL: false
+      SPRING_JPA_HIBERNATE_DDL_AUTO: none
+      SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL: true
+      SPRING_JPA_PROPERTIES_HIBERNATE_USE_SQL_COMMENTS: false
+      
+      # HikariCP configuration
+      SPRING_DATASOURCE_HIKARI_MAXIMUM_POOL_SIZE: 20
+      SPRING_DATASOURCE_HIKARI_MINIMUM_IDLE: 5
+      
+      # Server configuration
+      SERVER_PORT: 3333
+      
+      # JWT Configuration
+      JWT_SECRET: winmart-secret-key-for-jwt-token-generation-must-be-at-least-256-bits-long
+      JWT_EXPIRATION: 86400000
+      JWT_REFRESH_EXPIRATION: 604800000
+      
+      # Timezone
+      TZ: Asia/Ho_Chi_Minh
+      
+      # JVM options
+      JAVA_OPTS: "-Xms512m -Xmx1024m"
+    depends_on:
+      postgres-db:
+        condition: service_healthy
+    networks:
+      - winmart-network
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3333/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  winmart-network:
+    driver: bridge
+

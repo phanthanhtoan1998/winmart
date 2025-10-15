@@ -1,0 +1,63 @@
+server:
+  port: 3333
+
+spring:
+  # application
+  application:
+    name: winmart-user-service
+  #DBS
+  datasource:
+    hikari:
+      maximum-pool-size: ${SPRING_DATASOURCE_HIKARI_MAXIMUM_POOL_SIZE:20}
+      minimum-idle: ${SPRING_DATASOURCE_HIKARI_MINIMUM_IDLE:5}
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://postgres-db:5432/winmart_db}
+    username: ${SPRING_DATASOURCE_USERNAME:winmart}
+    password: ${SPRING_DATASOURCE_PASSWORD:winmart}
+    driver-class-name: ${SPRING_DATASOURCE_DRIVER_CLASS_NAME:org.postgresql.Driver}
+  jpa:
+    database: postgresql
+    show-sql: false
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        format_sql: true
+        use_sql_comments: false
+        jdbc:
+          batch_size: 20
+        order_inserts: true
+        order_updates: true
+  # enable virtual threads
+  threads:
+    virtual:
+      enabled: true
+
+# JWT Configuration
+jwt:
+  secret: ${JWT_SECRET:winmart-secret-key-for-jwt-token-generation-must-be-at-least-256-bits-long}
+  expiration: ${JWT_EXPIRATION:86400000}
+  refresh-expiration: ${JWT_REFRESH_EXPIRATION:604800000}
+
+# Logging configuration for Docker
+logging:
+  level:
+    root: INFO
+    com.winmart: INFO
+    org.springframework.web: INFO
+    org.hibernate: WARN
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+
+# Management endpoints (for health check)
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: when-authorized
+

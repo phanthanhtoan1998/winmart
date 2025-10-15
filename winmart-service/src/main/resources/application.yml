@@ -10,15 +10,15 @@ spring:
     hikari:
       maximum-pool-size: 20 # Số lượng tối đa kết nối
       minimum-idle: 5 # Số lượng kết nối tối thiểu trong pool
-    url: jdbc:postgresql://localhost:5432/winmart_db
+    url: jdbc:postgresql://172.188.81.232:5432/winmart_db
     username: exam
-    password: exam123
+    password: exam1998
     driver-class-name: org.postgresql.Driver
   jpa:
     database: postgresql
     show-sql: true
     hibernate:
-      ddl-auto: update # Tự động tạo/cập nhật bảng
+      ddl-auto: none # Tự động tạo/cập nhật bảng
     properties:
       hibernate:
         format_sql: true
@@ -33,3 +33,13 @@ jwt:
   secret: winmart-secret-key-for-jwt-token-generation-must-be-at-least-256-bits-long
   expiration: 86400000 # 24 hours in milliseconds
   refresh-expiration: 604800000 # 7 days in milliseconds
+
+# Management endpoints (for health checks)
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: when-authorized
