@@ -3,28 +3,6 @@ version: '3.8'
 services:
   # PostgreSQL Database
   postgres-db:
-    container_name: winmart-postgres
-    image: postgres:16-alpine
-    restart: unless-stopped
-    environment:
-      POSTGRES_DB: winmart_db
-      POSTGRES_USER: winmart
-      POSTGRES_PASSWORD: winmart@2024
-      TZ: Asia/Ho_Chi_Minh
-      PGTZ: Asia/Ho_Chi_Minh
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-      - ./init-database.sql:/docker-entrypoint-initdb.d/01-init.sql
-    networks:
-      - winmart-network
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U winmart -d winmart_db"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
   # Winmart Application
   winmart-app:
     container_name: winmart-service
@@ -39,9 +17,9 @@ services:
       SPRING_PROFILES_ACTIVE: docker
       
       # Database configuration
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-db:5432/winmart_db
-      SPRING_DATASOURCE_USERNAME: winmart
-      SPRING_DATASOURCE_PASSWORD: winmart@2024
+      SPRING_DATASOURCE_URL: jdbc:postgresql://172.188.81.232:5432/winmart_db
+      SPRING_DATASOURCE_USERNAME: exam
+      SPRING_DATASOURCE_PASSWORD: exam1998
       SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
       
       # JPA configuration
@@ -74,7 +52,7 @@ services:
     networks:
       - winmart-network
     healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3333/actuator/health"]
+      test: [ "CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3333/actuator/health" ]
       interval: 30s
       timeout: 10s
       retries: 3
