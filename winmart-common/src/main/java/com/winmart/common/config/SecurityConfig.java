@@ -4,6 +4,7 @@ import com.winmart.common.config.bean.Public;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -27,7 +28,7 @@ public class SecurityConfig {
   @Bean
   public SecurityFilterChain securityFilterChain(
       HttpSecurity http,
-      RequestMappingHandlerMapping requestMappingHandlerMapping)
+      @Qualifier("requestMappingHandlerMapping") RequestMappingHandlerMapping requestMappingHandlerMapping)
       throws Exception {
     String[] publicEndpoints = getPublicEndpoints(requestMappingHandlerMapping);
 
