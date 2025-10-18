@@ -157,5 +157,17 @@ public class JwtUtil {
             return false;
         }
     }
+
+    /**
+     * Get user ID from token (alias for extractUserId)
+     */
+    public Long getUserIdFromToken(String token) {
+        try {
+            return extractUserId(token);
+        } catch (Exception e) {
+            log.error("Error extracting user ID from token: {}", e.getMessage());
+            return null;
+        }
+    }
 }
 

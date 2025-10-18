@@ -8,6 +8,7 @@ import com.winmart.userservice.dto.request.CreateUserRequest;
 import com.winmart.userservice.dto.request.LoginRequest;
 import com.winmart.userservice.dto.response.CreateUserResponse;
 import com.winmart.userservice.dto.response.LoginResponse;
+import com.winmart.userservice.dto.response.UserProfileResponse;
 import com.winmart.userservice.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -48,5 +49,14 @@ public class UserController extends BaseController {
     public ResponseEntity<ResponseDto<Void>> createUser(@Valid @RequestBody CreateUserRequest request) {
         userService.createUser(request);
         return ResponseConfig.success(null, "User created successfully");
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<ResponseDto<UserProfileResponse>> getMe(@RequestHeader("Authorization") String token) {
+        ResponseEntity<UserProfileResponse> response = userService.getMe(token);
+        if (response.getStatusCode().is2xxSuccessful()) {
+            return ResponseConfig.success(response.getBody(), "User profile retrieved successfully");
+        }
+        return ResponseConfig.badRequest("Invalid token or user not found");
     }
 }

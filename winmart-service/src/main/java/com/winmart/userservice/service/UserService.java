@@ -5,6 +5,7 @@ import com.winmart.userservice.dto.request.CreateUserRequest;
 import com.winmart.userservice.dto.request.LoginRequest;
 import com.winmart.userservice.dto.response.CreateUserResponse;
 import com.winmart.userservice.dto.response.LoginResponse;
+import com.winmart.userservice.dto.response.UserProfileResponse;
 import com.winmart.userservice.entity.UserEntity;
 import org.springframework.http.ResponseEntity;
 
@@ -14,4 +15,6 @@ public interface UserService extends BaseService<UserEntity, CreateUserResponse>
     ResponseEntity<CreateUserResponse> register(CreateUserRequest request);
 
     ResponseEntity<LoginResponse> login(LoginRequest loginRequest);
+
+    ResponseEntity<UserProfileResponse> getMe(String token);
 }

@@ -6,6 +6,7 @@ import com.winmart.userservice.dto.request.CreateUserRequest;
 import com.winmart.userservice.dto.request.LoginRequest;
 import com.winmart.userservice.dto.response.CreateUserResponse;
 import com.winmart.userservice.dto.response.LoginResponse;
+import com.winmart.userservice.dto.response.UserProfileResponse;
 import com.winmart.userservice.entity.UserEntity;
 import com.winmart.userservice.repository.UserRepository;
 import com.winmart.userservice.service.UserService;
@@ -111,6 +112,55 @@ public class UserServiceImpl extends BaseServiceImpl<UserEntity, CreateUserRespo
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             log.error("Login error: {}", e.getMessage(), e);
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    @Override
+    public ResponseEntity<UserProfileResponse> getMe(String token) {
+        try {
+            // Remove "Bearer " prefix if present
+            if (token.startsWith("Bearer ")) {
+                token = token.substring(7);
+            }
+
+            // Validate token and extract user info
+            if (!jwtUtil.validateToken(token)) {
+                log.warn("Get me failed: Invalid token");
+                return ResponseEntity.badRequest().build();
+            }
+
+            // Extract user ID from token
+            Long userId = jwtUtil.getUserIdFromToken(token);
+            if (userId == null) {
+                log.warn("Get me failed: Could not extract user ID from token");
+                return ResponseEntity.badRequest().build();
+            }
+
+            // Find user by ID
+            Optional<UserEntity> userOptional = userRepository.findById(userId);
+            if (userOptional.isEmpty()) {
+                log.warn("Get me failed: User not found with ID - {}", userId);
+                return ResponseEntity.badRequest().build();
+            }
+
+            UserEntity user = userOptional.get();
+
+            // Create user profile response
+            UserProfileResponse response = UserProfileResponse.builder()
+                    .id(user.getId())
+                    .fullName(user.getFullName())
+                    .email(user.getEmail())
+                    .phone(user.getPhone())
+                    .address(user.getAddress())
+                    .role(user.getRole())
+                    .createdAt(user.getCreatedAt())
+                    .build();
+
+            log.info("User profile retrieved successfully: {}", user.getEmail());
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            log.error("Get me error: {}", e.getMessage(), e);
             return ResponseEntity.internalServerError().build();
         }
     }

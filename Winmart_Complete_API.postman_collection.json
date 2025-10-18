@@ -11,6 +11,24 @@
 			"item": [
 				{
 					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"// Auto set token after successful login",
+									"if (pm.response.code === 200) {",
+									"    const responseJson = pm.response.json();",
+									"    if (responseJson.success && responseJson.data && responseJson.data.accessToken) {",
+									"        pm.environment.set('token', responseJson.data.accessToken);",
+									"        console.log('Token saved to environment:', responseJson.data.accessToken);",
+									"    }",
+									"}"
+								]
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [
@@ -75,6 +93,24 @@
 			"item": [
 				{
 					"name": "User Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"// Auto set token after successful login",
+									"if (pm.response.code === 200) {",
+									"    const responseJson = pm.response.json();",
+									"    if (responseJson.success && responseJson.data && responseJson.data.accessToken) {",
+									"        pm.environment.set('token', responseJson.data.accessToken);",
+									"        console.log('Token saved to environment:', responseJson.data.accessToken);",
+									"    }",
+									"}"
+								]
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [
@@ -160,6 +196,31 @@
 							]
 						},
 						"description": "Create new user (requires authentication)"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Me (User Profile)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/users/me",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"me"
+							]
+						},
+						"description": "Get current user profile from JWT token"
 					},
 					"response": []
 				}
