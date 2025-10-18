@@ -32,7 +32,9 @@ COPY winmart-common/src winmart-common/src
 COPY winmart-service/src winmart-service/src
 
 # Build the application
-RUN mvn clean package -DskipTests -B
+RUN mvn clean package -DskipTests -B && \
+    echo "=== Listing target directory ===" && \
+    ls -lah winmart-service/target/*.jar
 
 # Stage 2: Runtime stage
 FROM eclipse-temurin:21-jre-alpine
@@ -41,10 +43,15 @@ WORKDIR /app
 
 # Create a non-root user
 RUN addgroup -S spring && adduser -S spring -G spring
-USER spring:spring
 
-# Copy the jar file from build stage (exclude .original)
-COPY --from=build /app/winmart-service/target/*-SNAPSHOT.jar app.jar
+# Copy the executable jar file from build stage
+# Spring Boot creates both .jar and .jar.original, we need the repackaged one
+COPY --from=build /app/winmart-service/target/winmart-service.jar app.jar
+
+# Change ownership of the jar file
+RUN chown spring:spring app.jar
+
+USER spring:spring
 
 # Expose port
 EXPOSE 3333
