@@ -11,10 +11,10 @@ RUN mkdir -p /root/.m2 && \
     echo '  xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 https://maven.apache.org/xsd/settings-1.0.0.xsd">' >> /root/.m2/settings.xml && \
     echo '  <mirrors>' >> /root/.m2/settings.xml && \
     echo '    <mirror>' >> /root/.m2/settings.xml && \
-    echo '      <id>aliyun</id>' >> /root/.m2/settings.xml && \
-    echo '      <mirrorOf>central</mirrorOf>' >> /root/.m2/settings.xml && \
-    echo '      <name>Aliyun Maven Mirror</name>' >> /root/.m2/settings.xml && \
-    echo '      <url>https://maven.aliyun.com/repository/public</url>' >> /root/.m2/settings.xml && \
+    echo '      <id>central</id>' >> /root/.m2/settings.xml && \
+    echo '      <mirrorOf>*</mirrorOf>' >> /root/.m2/settings.xml && \
+    echo '      <name>Maven Central</name>' >> /root/.m2/settings.xml && \
+    echo '      <url>https://repo1.maven.org/maven2</url>' >> /root/.m2/settings.xml && \
     echo '    </mirror>' >> /root/.m2/settings.xml && \
     echo '  </mirrors>' >> /root/.m2/settings.xml && \
     echo '</settings>' >> /root/.m2/settings.xml
@@ -27,9 +27,16 @@ COPY winmart-service/pom.xml winmart-service/
 # Download dependencies (cached layer)
 RUN mvn dependency:go-offline -B || true
 
-# Copy source code
-COPY winmart-common/src winmart-common/src
+# Copy source code (force rebuild by changing order)
+# Updated: 2024-10-18 - Added UserProfileResponse.java
 COPY winmart-service/src winmart-service/src
+COPY winmart-common/src winmart-common/src
+
+# Debug: Check if UserProfileResponse exists
+RUN echo "=== Checking UserProfileResponse file ===" && \
+    find winmart-service/src -name "UserProfileResponse.java" -type f && \
+    echo "=== Listing response directory ===" && \
+    ls -la winmart-service/src/main/java/com/winmart/userservice/dto/response/
 
 # Build the application
 RUN mvn clean compile -DskipTests -B && \
