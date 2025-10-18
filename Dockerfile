@@ -27,22 +27,12 @@ COPY winmart-service/pom.xml winmart-service/
 # Download dependencies (cached layer)
 RUN mvn dependency:go-offline -B || true
 
-# Copy source code (force rebuild by changing order)
-# Updated: 2024-10-18 - Added UserProfileResponse.java
-COPY winmart-service/src winmart-service/src
+# Copy source code
 COPY winmart-common/src winmart-common/src
-
-# Debug: Check if UserProfileResponse exists
-RUN echo "=== Checking UserProfileResponse file ===" && \
-    find winmart-service/src -name "UserProfileResponse.java" -type f && \
-    echo "=== Listing response directory ===" && \
-    ls -la winmart-service/src/main/java/com/winmart/userservice/dto/response/
+COPY winmart-service/src winmart-service/src
 
 # Build the application
-RUN mvn clean compile -DskipTests -B && \
-    mvn package -DskipTests -B && \
-    echo "=== Listing target directory ===" && \
-    ls -lah winmart-service/target/*.jar
+RUN mvn clean package -DskipTests -B
 
 # Stage 2: Runtime stage
 FROM eclipse-temurin:21-jre-alpine
