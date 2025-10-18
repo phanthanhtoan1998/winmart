@@ -225,7 +225,7 @@
 					"response": []
 				},
 				{
-					"name": "Test Create Invoice with New Customer",
+					"name": "Create User (BaseController)",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -240,19 +240,161 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"userId\": 1,\n  \"customerName\": \"New Customer\",\n  \"customerPhone\": \"+84999999999\",\n  \"totalAmount\": 50000,\n  \"status\": \"PENDING\",\n  \"items\": [\n    {\n      \"productId\": 1,\n      \"quantity\": 1,\n      \"price\": 50000\n    }\n  ]\n}"
+							"raw": "{\n  \"fullName\": \"Test User\",\n  \"email\": \"test@example.com\",\n  \"phone\": \"+84901234567\",\n  \"password\": \"123456\",\n  \"address\": \"123 Test Street\",\n  \"role\": \"CUSTOMER\",\n  \"points\": 0\n}"
 						},
 						"url": {
-							"raw": "{{base_url}}/api/invoices",
+							"raw": "{{base_url}}/api/users/create",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"api",
-								"invoices"
+								"users",
+								"create"
 							]
 						},
-						"description": "Test creating invoice with new customer phone. System should create new user and add 5 points (50000/10000)."
+						"description": "Create new user using BaseController /create endpoint"
+					},
+					"response": []
+				},
+				{
+					"name": "Update User (BaseController)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\": 1,\n  \"fullName\": \"Updated User\",\n  \"email\": \"updated@example.com\",\n  \"phone\": \"+84901234567\",\n  \"password\": \"123456\",\n  \"address\": \"456 Updated Street\",\n  \"role\": \"CUSTOMER\",\n  \"points\": 100\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/users/update",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"update"
+							]
+						},
+						"description": "Update user using BaseController /update endpoint"
+					},
+					"response": []
+				},
+				{
+					"name": "Get User by ID (BaseController)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/users/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"1"
+							]
+						},
+						"description": "Get user by ID using BaseController /{id} endpoint"
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Users (BaseController)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/users/all",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"all"
+							]
+						},
+						"description": "Get all users using BaseController /all endpoint"
+					},
+					"response": []
+				},
+				{
+					"name": "Search Users (BaseController)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"page\": 0,\n  \"size\": 10,\n  \"sorts\": [\n    {\n      \"field\": \"createdDate\",\n      \"direction\": \"DESC\"\n    }\n  ],\n  \"filters\": [\n    {\n      \"field\": \"role\",\n      \"operator\": \"EQUAL\",\n      \"value\": \"CUSTOMER\"\n    }\n  ]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/users/search",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"search"
+							]
+						},
+						"description": "Search users with pagination and filters using BaseController /search endpoint"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User (BaseController)",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/users/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"1"
+							]
+						},
+						"description": "Delete user by ID using BaseController /{id} endpoint"
 					},
 					"response": []
 				}
@@ -335,6 +477,180 @@
 							]
 						},
 						"description": "Get children of a specific category"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Category (BaseController)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Electronics\",\n  \"description\": \"Electronic devices and gadgets\",\n  \"parentId\": null\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/categories/create",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"categories",
+								"create"
+							]
+						},
+						"description": "Create new category using BaseController /create endpoint"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Category (BaseController)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\": 1,\n  \"name\": \"Updated Electronics\",\n  \"description\": \"Updated electronic devices\",\n  \"parentId\": null\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/categories/update",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"categories",
+								"update"
+							]
+						},
+						"description": "Update category using BaseController /update endpoint"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Category by ID (BaseController)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/categories/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"categories",
+								"1"
+							]
+						},
+						"description": "Get category by ID using BaseController /{id} endpoint"
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Categories (BaseController)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/categories/all",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"categories",
+								"all"
+							]
+						},
+						"description": "Get all categories using BaseController /all endpoint"
+					},
+					"response": []
+				},
+				{
+					"name": "Search Categories (BaseController)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"page\": 0,\n  \"size\": 10,\n  \"sorts\": [\n    {\n      \"field\": \"name\",\n      \"direction\": \"ASC\"\n    }\n  ],\n  \"filters\": [\n    {\n      \"field\": \"parentId\",\n      \"operator\": \"IS_NULL\",\n      \"value\": null\n    }\n  ]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/categories/search",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"categories",
+								"search"
+							]
+						},
+						"description": "Search categories with pagination and filters using BaseController /search endpoint"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Category (BaseController)",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/categories/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"categories",
+								"1"
+							]
+						},
+						"description": "Delete category by ID using BaseController /{id} endpoint"
 					},
 					"response": []
 				}
@@ -504,70 +820,7 @@
 			"name": "Invoices",
 			"item": [
 				{
-					"name": "Get All Invoices",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{token}}"
-							}
-						],
-						"url": {
-							"raw": "{{base_url}}/api/invoices?page=0&size=10&sort=createdAt,desc",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"api",
-								"invoices"
-							],
-							"query": [
-								{
-									"key": "page",
-									"value": "0"
-								},
-								{
-									"key": "size",
-									"value": "10"
-								},
-								{
-									"key": "sort",
-									"value": "createdAt,desc"
-								}
-							]
-						},
-						"description": "Get all invoices with pagination"
-					},
-					"response": []
-				},
-				{
-					"name": "Get Invoice by ID",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{token}}"
-							}
-						],
-						"url": {
-							"raw": "{{base_url}}/api/invoices/{{invoiceId}}",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"api",
-								"invoices",
-								"{{invoiceId}}"
-							]
-						},
-						"description": "Get invoice by ID"
-					},
-					"response": []
-				},
-				{
-					"name": "Create Invoice",
+					"name": "Create Invoice (BaseController)",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -582,24 +835,25 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"userId\": 1,\n  \"customerName\": \"John Doe\",\n  \"customerPhone\": \"+84901234567\",\n  \"totalAmount\": 29990000,\n  \"status\": \"PENDING\",\n  \"items\": [\n    {\n      \"productId\": 1,\n      \"quantity\": 1,\n      \"price\": 29990000\n    }\n  ]\n}"
+							"raw": "{\n  \"userId\": 1,\n  \"customerName\": \"Test Customer\",\n  \"customerPhone\": \"+84901234567\",\n  \"totalAmount\": 100000,\n  \"status\": \"PENDING\"\n}"
 						},
 						"url": {
-							"raw": "{{base_url}}/api/invoices",
+							"raw": "{{base_url}}/api/invoices/create",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"api",
-								"invoices"
+								"invoices",
+								"create"
 							]
 						},
-						"description": "Create new invoice. If customerPhone is provided, system will find existing user by phone or create new user, then automatically add points (1 point per 10,000 VND). If no phone provided, invoice will be created without points."
+						"description": "Create new invoice using BaseController /create endpoint. If customerPhone is provided, system will find existing user by phone or create new user, then automatically add points (1 point per 10,000 VND). If no phone provided, invoice will be created without points."
 					},
 					"response": []
 				},
 				{
-					"name": "Update Invoice",
+					"name": "Update Invoice (BaseController)",
 					"request": {
 						"method": "PUT",
 						"header": [
@@ -614,25 +868,108 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"userId\": 1,\n  \"customerName\": \"John Doe\",\n  \"totalAmount\": 29990000,\n  \"status\": \"PAID\",\n  \"items\": [\n    {\n      \"productId\": 1,\n      \"quantity\": 1,\n      \"price\": 29990000\n    }\n  ]\n}"
+							"raw": "{\n  \"id\": 1,\n  \"userId\": 1,\n  \"customerName\": \"Updated Customer\",\n  \"customerPhone\": \"+84901234567\",\n  \"totalAmount\": 150000,\n  \"status\": \"PAID\"\n}"
 						},
 						"url": {
-							"raw": "{{base_url}}/api/invoices/{{invoiceId}}",
+							"raw": "{{base_url}}/api/invoices/update",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"api",
 								"invoices",
-								"{{invoiceId}}"
+								"update"
 							]
 						},
-						"description": "Update existing invoice"
+						"description": "Update invoice using BaseController /update endpoint"
 					},
 					"response": []
 				},
 				{
-					"name": "Delete Invoice",
+					"name": "Get Invoice by ID (BaseController)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/invoices/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"invoices",
+								"1"
+							]
+						},
+						"description": "Get invoice by ID using BaseController /{id} endpoint"
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Invoices (BaseController)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/invoices/all",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"invoices",
+								"all"
+							]
+						},
+						"description": "Get all invoices using BaseController /all endpoint"
+					},
+					"response": []
+				},
+				{
+					"name": "Search Invoices (BaseController)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"page\": 0,\n  \"size\": 10,\n  \"sorts\": [\n    {\n      \"field\": \"createdDate\",\n      \"direction\": \"DESC\"\n    }\n  ],\n  \"filters\": [\n    {\n      \"field\": \"status\",\n      \"operator\": \"EQUAL\",\n      \"value\": \"PENDING\"\n    }\n  ]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/invoices/search",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"invoices",
+								"search"
+							]
+						},
+						"description": "Search invoices with pagination and filters using BaseController /search endpoint"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Invoice (BaseController)",
 					"request": {
 						"method": "DELETE",
 						"header": [
@@ -642,17 +979,116 @@
 							}
 						],
 						"url": {
-							"raw": "{{base_url}}/api/invoices/{{invoiceId}}",
+							"raw": "{{base_url}}/api/invoices/1",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"api",
 								"invoices",
-								"{{invoiceId}}"
+								"1"
 							]
 						},
-						"description": "Delete invoice by ID"
+						"description": "Delete invoice by ID using BaseController /{id} endpoint"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Multiple Invoices (BaseController)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n  {\n    \"userId\": 1,\n    \"customerName\": \"Customer 1\",\n    \"customerPhone\": \"+84901111111\",\n    \"totalAmount\": 50000,\n    \"status\": \"PENDING\"\n  },\n  {\n    \"userId\": 1,\n    \"customerName\": \"Customer 2\",\n    \"customerPhone\": \"+84902222222\",\n    \"totalAmount\": 75000,\n    \"status\": \"PENDING\"\n  }\n]"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/invoices/createList",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"invoices",
+								"createList"
+							]
+						},
+						"description": "Create multiple invoices using BaseController /createList endpoint"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Multiple Invoices (BaseController)",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[1, 2, 3]"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/invoices/deleteByIds",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"invoices",
+								"deleteByIds"
+							]
+						},
+						"description": "Delete multiple invoices by IDs using BaseController /deleteByIds endpoint"
+					},
+					"response": []
+				},
+				{
+					"name": "Test Create Invoice with Points (New Customer)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"userId\": 1,\n  \"customerName\": \"New Customer\",\n  \"customerPhone\": \"+84999999999\",\n  \"totalAmount\": 50000,\n  \"status\": \"PENDING\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/invoices/create",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"invoices",
+								"create"
+							]
+						},
+						"description": "Test creating invoice with new customer phone. System should create new user and add 5 points (50000/10000)."
 					},
 					"response": []
 				}
