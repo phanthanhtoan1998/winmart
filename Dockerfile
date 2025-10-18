@@ -32,7 +32,8 @@ COPY winmart-common/src winmart-common/src
 COPY winmart-service/src winmart-service/src
 
 # Build the application
-RUN mvn clean package -DskipTests -B && \
+RUN mvn clean compile -DskipTests -B && \
+    mvn package -DskipTests -B && \
     echo "=== Listing target directory ===" && \
     ls -lah winmart-service/target/*.jar
 
