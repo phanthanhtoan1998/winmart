@@ -16,6 +16,7 @@ import java.util.List;
 public class CreateInvoiceRequest extends BaseDto {
     private Long userId;
     private String customerName;
+    private String customerPhone; // Thêm số điện thoại khách hàng
     private BigDecimal totalAmount;
     private String status;
     private List<InvoiceItemRequest> items;

@@ -17,4 +17,7 @@ public interface UserService extends BaseService<UserEntity, CreateUserResponse>
     ResponseEntity<LoginResponse> login(LoginRequest loginRequest);
 
     ResponseEntity<UserProfileResponse> getMe(String token);
+    
+    // Create user from customer info if not exists, then add points
+    ResponseEntity<String> addPointsByPhoneOrCreateUser(String phone, String customerName, Integer points);
 }

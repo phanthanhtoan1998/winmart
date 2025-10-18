@@ -7,7 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Data
 @AllArgsConstructor
@@ -20,5 +20,6 @@ public class UserProfileResponse extends BaseDto {
     private String phone;
     private String address;
     private UserEntity.UserRole role;
-    private LocalDateTime createdAt;
+    private Integer points;
+    private Date createdDate;
 }

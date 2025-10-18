@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Slf4j
@@ -154,7 +155,8 @@ public class UserServiceImpl extends BaseServiceImpl<UserEntity, CreateUserRespo
                     .phone(user.getPhone())
                     .address(user.getAddress())
                     .role(user.getRole())
-                    .createdAt(user.getCreatedAt())
+                    .points(user.getPoints())
+                    .createdDate(user.getCreatedDate())
                     .build();
 
             log.info("User profile retrieved successfully: {}", user.getEmail());
@@ -241,6 +243,47 @@ public class UserServiceImpl extends BaseServiceImpl<UserEntity, CreateUserRespo
         } catch (Exception e) {
             log.error("Error saving list of users from object: ", e);
             throw new RuntimeException("Error saving list of users: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public ResponseEntity<String> addPointsByPhoneOrCreateUser(String phone, String customerName, Integer points) {
+        try {
+            // Tìm user theo số điện thoại
+            Optional<UserEntity> userOptional = userRepository.findByPhone(phone);
+            UserEntity user;
+            
+            if (userOptional.isEmpty()) {
+                // Nếu không có user, tạo user mới
+                log.info("User not found with phone {}, creating new user", phone);
+                
+                user = UserEntity.builder()
+                        .fullName(customerName != null ? customerName : "Customer")
+                        .phone(phone)
+                        .email(phone + "@customer.winmart.com") // Tạo email tạm từ phone
+                        .password(passwordEncoder.encode("123456")) // Password mặc định
+                        .role(UserEntity.UserRole.CUSTOMER)
+                        .points(0)
+                        .build();
+                
+                user = userRepository.save(user);
+                log.info("New user created: {} with phone {}", user.getFullName(), phone);
+            } else {
+                user = userOptional.get();
+                log.info("Found existing user: {} with phone {}", user.getFullName(), phone);
+            }
+            
+            // Cộng điểm cho user
+            user.setPoints(user.getPoints() + points);
+            userRepository.save(user);
+
+            log.info("Points added successfully for user {} (phone: {}): +{} points, total: {}", 
+                    user.getFullName(), phone, points, user.getPoints());
+            return ResponseEntity.ok("Points added successfully for " + user.getFullName() + 
+                    ". Total points: " + user.getPoints());
+        } catch (Exception e) {
+            log.error("Add points by phone or create user error: {}", e.getMessage(), e);
+            return ResponseEntity.internalServerError().body("Error adding points");
         }
     }
 }

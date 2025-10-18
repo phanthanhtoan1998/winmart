@@ -34,8 +34,9 @@ public class UserEntity extends BaseEntity {
     @Column(name = "role", length = 20)
     private UserRole role = UserRole.CUSTOMER;
 
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
+    @Column(name = "points", nullable = false)
+    @Builder.Default
+    private Integer points = 0;
 
     public enum UserRole {
         CUSTOMER, EMPLOYEE, ADMIN

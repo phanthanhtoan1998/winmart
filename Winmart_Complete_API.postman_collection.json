@@ -223,6 +223,38 @@
 						"description": "Get current user profile from JWT token"
 					},
 					"response": []
+				},
+				{
+					"name": "Test Create Invoice with New Customer",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"userId\": 1,\n  \"customerName\": \"New Customer\",\n  \"customerPhone\": \"+84999999999\",\n  \"totalAmount\": 50000,\n  \"status\": \"PENDING\",\n  \"items\": [\n    {\n      \"productId\": 1,\n      \"quantity\": 1,\n      \"price\": 50000\n    }\n  ]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/invoices",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"invoices"
+							]
+						},
+						"description": "Test creating invoice with new customer phone. System should create new user and add 5 points (50000/10000)."
+					},
+					"response": []
 				}
 			],
 			"description": "User management endpoints"
@@ -550,7 +582,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"userId\": 1,\n  \"customerName\": \"John Doe\",\n  \"totalAmount\": 29990000,\n  \"status\": \"PENDING\",\n  \"items\": [\n    {\n      \"productId\": 1,\n      \"quantity\": 1,\n      \"price\": 29990000\n    }\n  ]\n}"
+							"raw": "{\n  \"userId\": 1,\n  \"customerName\": \"John Doe\",\n  \"customerPhone\": \"+84901234567\",\n  \"totalAmount\": 29990000,\n  \"status\": \"PENDING\",\n  \"items\": [\n    {\n      \"productId\": 1,\n      \"quantity\": 1,\n      \"price\": 29990000\n    }\n  ]\n}"
 						},
 						"url": {
 							"raw": "{{base_url}}/api/invoices",
@@ -562,7 +594,7 @@
 								"invoices"
 							]
 						},
-						"description": "Create new invoice"
+						"description": "Create new invoice. If customerPhone is provided, system will find existing user by phone or create new user, then automatically add points (1 point per 10,000 VND). If no phone provided, invoice will be created without points."
 					},
 					"response": []
 				},

@@ -18,6 +18,7 @@ public class InvoiceResponse extends BaseDto {
     private Long invoiceId;
     private Long userId;
     private String customerName;
+    private String customerPhone;
     private BigDecimal totalAmount;
     private String status;
     private LocalDateTime createdAt;

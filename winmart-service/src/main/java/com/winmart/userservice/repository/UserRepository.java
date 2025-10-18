@@ -9,4 +9,5 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends BaseRepository<UserEntity, Long> {
     Optional<UserEntity> findByEmail(String email);
+    Optional<UserEntity> findByPhone(String phone);
 }
