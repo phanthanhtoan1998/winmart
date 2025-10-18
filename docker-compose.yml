@@ -1,8 +1,6 @@
 version: '3.8'
 
 services:
-  # PostgreSQL Database
-  postgres-db:
   # Winmart Application
   winmart-app:
     container_name: winmart-service
@@ -46,9 +44,6 @@ services:
       
       # JVM options
       JAVA_OPTS: "-Xms512m -Xmx1024m"
-    depends_on:
-      postgres-db:
-        condition: service_healthy
     networks:
       - winmart-network
     healthcheck:
@@ -57,10 +52,6 @@ services:
       timeout: 10s
       retries: 3
       start_period: 60s
-
-volumes:
-  postgres_data:
-    driver: local
 
 networks:
   winmart-network:
