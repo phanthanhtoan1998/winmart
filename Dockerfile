@@ -3,13 +3,29 @@ FROM maven:3.9-eclipse-temurin-21-alpine AS build
 
 WORKDIR /app
 
+# Configure Maven settings for better dependency resolution
+RUN mkdir -p /root/.m2 && \
+    echo '<?xml version="1.0" encoding="UTF-8"?>' > /root/.m2/settings.xml && \
+    echo '<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"' >> /root/.m2/settings.xml && \
+    echo '  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"' >> /root/.m2/settings.xml && \
+    echo '  xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 https://maven.apache.org/xsd/settings-1.0.0.xsd">' >> /root/.m2/settings.xml && \
+    echo '  <mirrors>' >> /root/.m2/settings.xml && \
+    echo '    <mirror>' >> /root/.m2/settings.xml && \
+    echo '      <id>aliyun</id>' >> /root/.m2/settings.xml && \
+    echo '      <mirrorOf>central</mirrorOf>' >> /root/.m2/settings.xml && \
+    echo '      <name>Aliyun Maven Mirror</name>' >> /root/.m2/settings.xml && \
+    echo '      <url>https://maven.aliyun.com/repository/public</url>' >> /root/.m2/settings.xml && \
+    echo '    </mirror>' >> /root/.m2/settings.xml && \
+    echo '  </mirrors>' >> /root/.m2/settings.xml && \
+    echo '</settings>' >> /root/.m2/settings.xml
+
 # Copy pom files
 COPY pom.xml .
 COPY winmart-common/pom.xml winmart-common/
 COPY winmart-service/pom.xml winmart-service/
 
 # Download dependencies (cached layer)
-RUN mvn dependency:go-offline -B
+RUN mvn dependency:go-offline -B || true
 
 # Copy source code
 COPY winmart-common/src winmart-common/src
@@ -27,8 +43,8 @@ WORKDIR /app
 RUN addgroup -S spring && adduser -S spring -G spring
 USER spring:spring
 
-# Copy the jar file from build stage
-COPY --from=build /app/winmart-service/target/winmart-service.jar app.jar
+# Copy the jar file from build stage (exclude .original)
+COPY --from=build /app/winmart-service/target/*-SNAPSHOT.jar app.jar
 
 # Expose port
 EXPOSE 3333

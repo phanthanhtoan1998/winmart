@@ -4,27 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c0a0739f-4b05-43db-814a-f2ac2fe5e68f" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/API_CHEATSHEET.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/API_OVERVIEW.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/COMPLETE_API_REFERENCE.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/DATABASE_SETUP.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/LOGIN_API_GUIDE.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/POSTMAN_GUIDE.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/QUICK_DEPLOY.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/QUICK_START_LOGIN.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/README_DOCKER.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/SAMPLE_DATA.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Winmart_API_Collection.postman_collection.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Winmart_Auth_API.postman_collection.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Winmart_Environment.postman_environment.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/create_database.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/create_winmart_database.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/deploy.bat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/deploy.sh" beforeDir="false" afterPath="$PROJECT_DIR$/deploy.sh" afterDir="false" />
+    <list default="true" id="c0a0739f-4b05-43db-814a-f2ac2fe5e68f" name="Changes" comment="Merge remote-tracking branch 'origin/main'&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml&#10;#&#9;winmart-service/docker-compose.yml">
+      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/setup_database_simple.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/winmart-service/docker-compose.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/winmart-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/winmart-service/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -180,6 +163,10 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="fix build VPS" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix build VPS" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
