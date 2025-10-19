@@ -33,6 +33,7 @@ public class SecurityConfig {
     String[] publicEndpoints = getPublicEndpoints(requestMappingHandlerMapping);
 
     http.csrf(AbstractHttpConfigurer::disable) // 🔑 Tắt CSRF cho REST API
+        .cors(cors -> cors.and()) // 🔑 Enable CORS
         .authorizeHttpRequests(
             auth ->
                 auth.requestMatchers("/public/**")
