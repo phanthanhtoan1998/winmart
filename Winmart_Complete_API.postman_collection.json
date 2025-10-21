@@ -356,7 +356,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"page\": 0,\n  \"size\": 10,\n  \"sorts\": [\n    {\n      \"field\": \"createdDate\",\n      \"direction\": \"DESC\"\n    }\n  ],\n  \"filters\": [\n    {\n      \"field\": \"role\",\n      \"operator\": \"EQUAL\",\n      \"value\": \"CUSTOMER\"\n    }\n  ]\n}"
+							"raw": "{\n  \"page\": 0,\n  \"size\": 10,\n  \"sortField\": [\n    {\n      \"fieldName\": \"createdDate\",\n      \"sort\": \"DESC\"\n    }\n  ],\n  \"lsCondition\": [\n    {\n      \"property\": \"role\",\n      \"propertyType\": \"string\",\n      \"operator\": \"EQUAL\",\n      \"value\": \"CUSTOMER\"\n    }\n  ]\n}"
 						},
 						"url": {
 							"raw": "{{base_url}}/api/users/search",
@@ -612,7 +612,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"page\": 0,\n  \"size\": 10,\n  \"sorts\": [\n    {\n      \"field\": \"name\",\n      \"direction\": \"ASC\"\n    }\n  ],\n  \"filters\": [\n    {\n      \"field\": \"parentId\",\n      \"operator\": \"IS_NULL\",\n      \"value\": null\n    }\n  ]\n}"
+							"raw": "{\n  \"page\": 0,\n  \"size\": 10,\n  \"sortField\": [\n    {\n      \"fieldName\": \"name\",\n      \"sort\": \"ASC\"\n    }\n  ],\n  \"lsCondition\": [\n    {\n      \"property\": \"parentId\",\n      \"propertyType\": \"long\",\n      \"operator\": \"EQUAL\",\n      \"value\": null\n    }\n  ]\n}"
 						},
 						"url": {
 							"raw": "{{base_url}}/api/categories/search",
@@ -951,7 +951,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"page\": 0,\n  \"size\": 10,\n  \"sorts\": [\n    {\n      \"field\": \"createdDate\",\n      \"direction\": \"DESC\"\n    }\n  ],\n  \"filters\": [\n    {\n      \"field\": \"status\",\n      \"operator\": \"EQUAL\",\n      \"value\": \"PENDING\"\n    }\n  ]\n}"
+							"raw": "{\n  \"page\": 0,\n  \"size\": 10,\n  \"sortField\": [\n    {\n      \"fieldName\": \"createdDate\",\n      \"sort\": \"DESC\"\n    }\n  ],\n  \"lsCondition\": [\n    {\n      \"property\": \"status\",\n      \"propertyType\": \"string\",\n      \"operator\": \"EQUAL\",\n      \"value\": \"PENDING\"\n    }\n  ]\n}"
 						},
 						"url": {
 							"raw": "{{base_url}}/api/invoices/search",
@@ -1455,7 +1455,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"page\": 0,\n  \"size\": 10,\n  \"sorts\": [\n    {\n      \"field\": \"startDate\",\n      \"direction\": \"DESC\"\n    }\n  ],\n  \"filters\": [\n    {\n      \"field\": \"status\",\n      \"operator\": \"EQUAL\",\n      \"value\": \"ACTIVE\"\n    }\n  ]\n}"
+							"raw": "{\n  \"page\": 0,\n  \"size\": 10,\n  \"sortField\": [\n    {\n      \"fieldName\": \"startDate\",\n      \"sort\": \"DESC\"\n    }\n  ],\n  \"lsCondition\": [\n    {\n      \"property\": \"status\",\n      \"propertyType\": \"string\",\n      \"operator\": \"EQUAL\",\n      \"value\": \"ACTIVE\"\n    }\n  ]\n}"
 						},
 						"url": {
 							"raw": "{{base_url}}/api/promotions/search",
@@ -1767,7 +1767,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"page\": 0,\n  \"size\": 10,\n  \"sorts\": [\n    {\n      \"field\": \"createdAt\",\n      \"direction\": \"DESC\"\n    }\n  ],\n  \"filters\": [\n    {\n      \"field\": \"actionType\",\n      \"operator\": \"EQUAL\",\n      \"value\": \"IMPORT\"\n    }\n  ]\n}"
+							"raw": "{\n  \"page\": 0,\n  \"size\": 10,\n  \"sortField\": [\n    {\n      \"fieldName\": \"createdAt\",\n      \"sort\": \"DESC\"\n    }\n  ],\n  \"lsCondition\": [\n    {\n      \"property\": \"actionType\",\n      \"propertyType\": \"string\",\n      \"operator\": \"EQUAL\",\n      \"value\": \"IMPORT\"\n    }\n  ]\n}"
 						},
 						"url": {
 							"raw": "{{base_url}}/api/inventory-logs/search",
