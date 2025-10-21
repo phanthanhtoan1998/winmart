@@ -1258,70 +1258,7 @@
 			"name": "Promotions",
 			"item": [
 				{
-					"name": "Get All Promotions",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{token}}"
-							}
-						],
-						"url": {
-							"raw": "{{base_url}}/api/promotions?page=0&size=10&sort=startDate,desc",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"api",
-								"promotions"
-							],
-							"query": [
-								{
-									"key": "page",
-									"value": "0"
-								},
-								{
-									"key": "size",
-									"value": "10"
-								},
-								{
-									"key": "sort",
-									"value": "startDate,desc"
-								}
-							]
-						},
-						"description": "Get all promotions with pagination"
-					},
-					"response": []
-				},
-				{
-					"name": "Get Promotion by ID",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{token}}"
-							}
-						],
-						"url": {
-							"raw": "{{base_url}}/api/promotions/{{promotionId}}",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"api",
-								"promotions",
-								"{{promotionId}}"
-							]
-						},
-						"description": "Get promotion by ID"
-					},
-					"response": []
-				},
-				{
-					"name": "Create Promotion",
+					"name": "Create Promotion (BaseController)",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -1336,24 +1273,58 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"Black Friday Sale\",\n  \"description\": \"50% off on all electronics\",\n  \"discountType\": \"PERCENTAGE\",\n  \"discountValue\": 50.0,\n  \"startDate\": \"2024-11-24T00:00:00\",\n  \"endDate\": \"2024-11-30T23:59:59\",\n  \"isActive\": true\n}"
+							"raw": "{\n  \"code\": \"BLACKFRIDAY2024\",\n  \"discountPercent\": 50.00,\n  \"startDate\": \"2024-11-24\",\n  \"endDate\": \"2024-11-30\",\n  \"status\": \"ACTIVE\"\n}"
 						},
 						"url": {
-							"raw": "{{base_url}}/api/promotions",
+							"raw": "{{base_url}}/api/promotions/create",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"api",
-								"promotions"
+								"promotions",
+								"create"
 							]
 						},
-						"description": "Create new promotion"
+						"description": "Create new promotion using BaseController /create endpoint"
 					},
 					"response": []
 				},
 				{
-					"name": "Update Promotion",
+					"name": "Create Multiple Promotions (BaseController)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n  {\n    \"code\": \"SUMMER2024\",\n    \"discountPercent\": 30.00,\n    \"startDate\": \"2024-06-01\",\n    \"endDate\": \"2024-08-31\",\n    \"status\": \"ACTIVE\"\n  },\n  {\n    \"code\": \"WINTER2024\",\n    \"discountPercent\": 25.00,\n    \"startDate\": \"2024-12-01\",\n    \"endDate\": \"2024-12-31\",\n    \"status\": \"ACTIVE\"\n  }\n]"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/promotions/createList",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"promotions",
+								"createList"
+							]
+						},
+						"description": "Create multiple promotions using BaseController /createList endpoint"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Promotion (BaseController)",
 					"request": {
 						"method": "PUT",
 						"header": [
@@ -1368,25 +1339,174 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"Black Friday Sale Extended\",\n  \"description\": \"60% off on all electronics\",\n  \"discountType\": \"PERCENTAGE\",\n  \"discountValue\": 60.0,\n  \"startDate\": \"2024-11-24T00:00:00\",\n  \"endDate\": \"2024-12-01T23:59:59\",\n  \"isActive\": true\n}"
+							"raw": "{\n  \"id\": 1,\n  \"code\": \"BLACKFRIDAY2024\",\n  \"discountPercent\": 60.00,\n  \"startDate\": \"2024-11-24\",\n  \"endDate\": \"2024-12-01\",\n  \"status\": \"ACTIVE\"\n}"
 						},
 						"url": {
-							"raw": "{{base_url}}/api/promotions/{{promotionId}}",
+							"raw": "{{base_url}}/api/promotions/update",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"api",
 								"promotions",
-								"{{promotionId}}"
+								"update"
 							]
 						},
-						"description": "Update existing promotion"
+						"description": "Update promotion using BaseController /update endpoint"
 					},
 					"response": []
 				},
 				{
-					"name": "Delete Promotion",
+					"name": "Save Promotion (BaseController)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"code\": \"NEWYEAR2025\",\n  \"discountPercent\": 40.00,\n  \"startDate\": \"2025-01-01\",\n  \"endDate\": \"2025-01-31\",\n  \"status\": \"ACTIVE\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/promotions/save",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"promotions",
+								"save"
+							]
+						},
+						"description": "Save promotion (create or update) using BaseController /save endpoint"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Promotion by ID (BaseController)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/promotions/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"promotions",
+								"1"
+							]
+						},
+						"description": "Get promotion by ID using BaseController /{id} endpoint"
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Promotions (BaseController)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/promotions/all",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"promotions",
+								"all"
+							]
+						},
+						"description": "Get all promotions using BaseController /all endpoint"
+					},
+					"response": []
+				},
+				{
+					"name": "Search Promotions (BaseController)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"page\": 0,\n  \"size\": 10,\n  \"sorts\": [\n    {\n      \"field\": \"startDate\",\n      \"direction\": \"DESC\"\n    }\n  ],\n  \"filters\": [\n    {\n      \"field\": \"status\",\n      \"operator\": \"EQUAL\",\n      \"value\": \"ACTIVE\"\n    }\n  ]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/promotions/search",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"promotions",
+								"search"
+							]
+						},
+						"description": "Search promotions with pagination and filters using BaseController /search endpoint"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Promotions Dropdown (BaseController)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"sorts\": [\n    {\n      \"field\": \"code\",\n      \"direction\": \"ASC\"\n    }\n  ],\n  \"filters\": [\n    {\n      \"field\": \"status\",\n      \"operator\": \"EQUAL\",\n      \"value\": \"ACTIVE\"\n    }\n  ]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/promotions/dropdown",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"promotions",
+								"dropdown"
+							]
+						},
+						"description": "Get promotions dropdown list using BaseController /dropdown endpoint"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Promotion (BaseController)",
 					"request": {
 						"method": "DELETE",
 						"header": [
@@ -1396,91 +1516,61 @@
 							}
 						],
 						"url": {
-							"raw": "{{base_url}}/api/promotions/{{promotionId}}",
+							"raw": "{{base_url}}/api/promotions/1",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"api",
 								"promotions",
-								"{{promotionId}}"
+								"1"
 							]
 						},
-						"description": "Delete promotion by ID"
+						"description": "Delete promotion by ID using BaseController /{id} endpoint"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Multiple Promotions (BaseController)",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[1, 2, 3]"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/promotions/deleteByIds",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"promotions",
+								"deleteByIds"
+							]
+						},
+						"description": "Delete multiple promotions by IDs using BaseController /deleteByIds endpoint"
 					},
 					"response": []
 				}
 			],
-			"description": "Promotion management endpoints"
+			"description": "Promotion management endpoints using BaseController"
 		},
 		{
 			"name": "Inventory Logs",
 			"item": [
 				{
-					"name": "Get All Inventory Logs",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{token}}"
-							}
-						],
-						"url": {
-							"raw": "{{base_url}}/api/inventory-logs?page=0&size=10&sort=createdAt,desc",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"api",
-								"inventory-logs"
-							],
-							"query": [
-								{
-									"key": "page",
-									"value": "0"
-								},
-								{
-									"key": "size",
-									"value": "10"
-								},
-								{
-									"key": "sort",
-									"value": "createdAt,desc"
-								}
-							]
-						},
-						"description": "Get all inventory logs with pagination"
-					},
-					"response": []
-				},
-				{
-					"name": "Get Inventory Log by ID",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{token}}"
-							}
-						],
-						"url": {
-							"raw": "{{base_url}}/api/inventory-logs/{{logId}}",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"api",
-								"inventory-logs",
-								"{{logId}}"
-							]
-						},
-						"description": "Get inventory log by ID"
-					},
-					"response": []
-				},
-				{
-					"name": "Create Inventory Log",
+					"name": "Create Inventory Log (BaseController)",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -1495,24 +1585,58 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"productId\": 1,\n  \"quantity\": 10,\n  \"type\": \"IN\",\n  \"reason\": \"Stock replenishment\",\n  \"reference\": \"PO-2024-001\"\n}"
+							"raw": "{\n  \"productId\": 1,\n  \"userId\": 1,\n  \"actionType\": \"IMPORT\",\n  \"quantity\": 10,\n  \"note\": \"Stock replenishment from supplier\"\n}"
 						},
 						"url": {
-							"raw": "{{base_url}}/api/inventory-logs",
+							"raw": "{{base_url}}/api/inventory-logs/create",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"api",
-								"inventory-logs"
+								"inventory-logs",
+								"create"
 							]
 						},
-						"description": "Create new inventory log"
+						"description": "Create new inventory log using BaseController /create endpoint"
 					},
 					"response": []
 				},
 				{
-					"name": "Update Inventory Log",
+					"name": "Create Multiple Inventory Logs (BaseController)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n  {\n    \"productId\": 1,\n    \"userId\": 1,\n    \"actionType\": \"IMPORT\",\n    \"quantity\": 20,\n    \"note\": \"Bulk import from supplier\"\n  },\n  {\n    \"productId\": 2,\n    \"userId\": 1,\n    \"actionType\": \"EXPORT\",\n    \"quantity\": 5,\n    \"note\": \"Sale transaction\"\n  }\n]"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/inventory-logs/createList",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"inventory-logs",
+								"createList"
+							]
+						},
+						"description": "Create multiple inventory logs using BaseController /createList endpoint"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Inventory Log (BaseController)",
 					"request": {
 						"method": "PUT",
 						"header": [
@@ -1527,25 +1651,174 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"productId\": 1,\n  \"quantity\": 5,\n  \"type\": \"OUT\",\n  \"reason\": \"Sale transaction\",\n  \"reference\": \"INV-2024-001\"\n}"
+							"raw": "{\n  \"id\": 1,\n  \"productId\": 1,\n  \"userId\": 1,\n  \"actionType\": \"EXPORT\",\n  \"quantity\": 5,\n  \"note\": \"Updated: Sale transaction\"\n}"
 						},
 						"url": {
-							"raw": "{{base_url}}/api/inventory-logs/{{logId}}",
+							"raw": "{{base_url}}/api/inventory-logs/update",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"api",
 								"inventory-logs",
-								"{{logId}}"
+								"update"
 							]
 						},
-						"description": "Update existing inventory log"
+						"description": "Update inventory log using BaseController /update endpoint"
 					},
 					"response": []
 				},
 				{
-					"name": "Delete Inventory Log",
+					"name": "Save Inventory Log (BaseController)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"productId\": 3,\n  \"userId\": 1,\n  \"actionType\": \"IMPORT\",\n  \"quantity\": 15,\n  \"note\": \"New stock arrival\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/inventory-logs/save",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"inventory-logs",
+								"save"
+							]
+						},
+						"description": "Save inventory log (create or update) using BaseController /save endpoint"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Inventory Log by ID (BaseController)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/inventory-logs/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"inventory-logs",
+								"1"
+							]
+						},
+						"description": "Get inventory log by ID using BaseController /{id} endpoint"
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Inventory Logs (BaseController)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/inventory-logs/all",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"inventory-logs",
+								"all"
+							]
+						},
+						"description": "Get all inventory logs using BaseController /all endpoint"
+					},
+					"response": []
+				},
+				{
+					"name": "Search Inventory Logs (BaseController)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"page\": 0,\n  \"size\": 10,\n  \"sorts\": [\n    {\n      \"field\": \"createdAt\",\n      \"direction\": \"DESC\"\n    }\n  ],\n  \"filters\": [\n    {\n      \"field\": \"actionType\",\n      \"operator\": \"EQUAL\",\n      \"value\": \"IMPORT\"\n    }\n  ]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/inventory-logs/search",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"inventory-logs",
+								"search"
+							]
+						},
+						"description": "Search inventory logs with pagination and filters using BaseController /search endpoint"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Inventory Logs Dropdown (BaseController)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"sorts\": [\n    {\n      \"field\": \"createdAt\",\n      \"direction\": \"DESC\"\n    }\n  ],\n  \"filters\": [\n    {\n      \"field\": \"actionType\",\n      \"operator\": \"EQUAL\",\n      \"value\": \"EXPORT\"\n    }\n  ]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/inventory-logs/dropdown",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"inventory-logs",
+								"dropdown"
+							]
+						},
+						"description": "Get inventory logs dropdown list using BaseController /dropdown endpoint"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Inventory Log (BaseController)",
 					"request": {
 						"method": "DELETE",
 						"header": [
@@ -1555,22 +1828,55 @@
 							}
 						],
 						"url": {
-							"raw": "{{base_url}}/api/inventory-logs/{{logId}}",
+							"raw": "{{base_url}}/api/inventory-logs/1",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"api",
 								"inventory-logs",
-								"{{logId}}"
+								"1"
 							]
 						},
-						"description": "Delete inventory log by ID"
+						"description": "Delete inventory log by ID using BaseController /{id} endpoint"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Multiple Inventory Logs (BaseController)",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[1, 2, 3]"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/inventory-logs/deleteByIds",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"inventory-logs",
+								"deleteByIds"
+							]
+						},
+						"description": "Delete multiple inventory logs by IDs using BaseController /deleteByIds endpoint"
 					},
 					"response": []
 				}
 			],
-			"description": "Inventory log management endpoints"
+			"description": "Inventory log management endpoints using BaseController"
 		},
 		{
 			"name": "Health Check",
