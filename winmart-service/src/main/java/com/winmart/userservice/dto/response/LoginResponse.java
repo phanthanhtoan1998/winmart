@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -16,6 +18,8 @@ public class LoginResponse extends BaseDto {
     private String email;
     private String phone;
     private String role;
+    private Integer points;
+    private Date createdDate;
     private String accessToken;
     private String refreshToken;
     private String tokenType;

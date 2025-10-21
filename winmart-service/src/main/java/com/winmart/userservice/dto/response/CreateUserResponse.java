@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,6 +20,8 @@ public class CreateUserResponse extends BaseDto {
     private String phone;
     private String address;
     private String role;
+    private Integer points;
+    private Date createdDate;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)  // Accept in request, don't return in response
     private String password;
