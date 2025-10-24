@@ -817,6 +817,157 @@
 			"description": "Product management endpoints"
 		},
 		{
+			"name": "File Upload",
+			"item": [
+				{
+					"name": "Upload Single File",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": []
+								},
+								{
+									"key": "category",
+									"value": "images",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/api/files/upload",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"files",
+								"upload"
+							]
+						},
+						"description": "Upload a single file with category"
+					},
+					"response": []
+				},
+				{
+					"name": "Upload Multiple Files",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n  {\n    \"file\": \"base64_encoded_file_content\",\n    \"category\": \"documents\"\n  },\n  {\n    \"file\": \"base64_encoded_file_content_2\",\n    \"category\": \"documents\"\n  }\n]"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/files/upload-multiple",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"files",
+								"upload-multiple"
+							]
+						},
+						"description": "Upload multiple files (requires authentication)"
+					},
+					"response": []
+				},
+				{
+					"name": "Download File",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/files/download?fileName={{fileName}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"files",
+								"download"
+							],
+							"query": [
+								{
+									"key": "fileName",
+									"value": "{{fileName}}",
+									"description": "Name of the file to download"
+								}
+							]
+						},
+						"description": "Download a file by filename"
+					},
+					"response": []
+				},
+				{
+					"name": "List All Files",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/files/list",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"files",
+								"list"
+							]
+						},
+						"description": "Get list of all uploaded files"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete File",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/files/{{fileName}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"files",
+								"{{fileName}}"
+							]
+						},
+						"description": "Delete a file by filename (requires authentication)"
+					},
+					"response": []
+				}
+			],
+			"description": "File upload and management endpoints"
+		},
+		{
 			"name": "Invoices",
 			"item": [
 				{
