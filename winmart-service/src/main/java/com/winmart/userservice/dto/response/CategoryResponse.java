@@ -15,14 +15,14 @@ import java.util.List;
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)  // Don't include null fields in response
 public class CategoryResponse extends BaseDto {
-    private Long categoryId;
+    private Long id;
     private String name;
     private String description;
     
     // Parent-Child relationship
     private Long parentId;
     private String parentName;
-    
+
     // Children (only included when explicitly requested)
     private List<CategoryResponse> children;
 }

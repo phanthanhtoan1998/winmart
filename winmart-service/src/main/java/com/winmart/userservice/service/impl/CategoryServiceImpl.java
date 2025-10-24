@@ -33,28 +33,28 @@ public class CategoryServiceImpl extends BaseServiceImpl<CategoryEntity, Categor
             } else {
                 dto = objectMapper.convertValue(data, CategoryResponse.class);
             }
-            
+
             // Convert DTO to Entity
             CategoryEntity entity = modelMapper.map(dto, CategoryEntity.class);
-            
+
             // Handle parent relationship
             if (dto.getParentId() != null) {
                 CategoryEntity parent = categoryRepository.findById(dto.getParentId())
                         .orElseThrow(() -> new RuntimeException("Parent category not found with ID: " + dto.getParentId()));
                 entity.setParent(parent);
             }
-            
+
             // Save
             CategoryEntity savedEntity = categoryRepository.save(entity);
-            
+
             // Convert back to response
             CategoryResponse response = modelMapper.map(savedEntity, CategoryResponse.class);
-            response.setCategoryId(savedEntity.getId());
+            response.setId(savedEntity.getId());
             if (savedEntity.getParent() != null) {
                 response.setParentId(savedEntity.getParent().getId());
                 response.setParentName(savedEntity.getParent().getName());
             }
-            
+
             return response;
         } catch (Exception e) {
             LOG.error("Error saving category from object: ", e);
@@ -76,17 +76,17 @@ public class CategoryServiceImpl extends BaseServiceImpl<CategoryEntity, Categor
                 } else {
                     dto = objectMapper.convertValue(data, CategoryResponse.class);
                 }
-                
+
                 // Convert DTO to Entity
                 CategoryEntity entity = modelMapper.map(dto, CategoryEntity.class);
-                
+
                 // Handle parent relationship
                 if (dto.getParentId() != null) {
                     CategoryEntity parent = categoryRepository.findById(dto.getParentId())
                             .orElseThrow(() -> new RuntimeException("Parent category not found with ID: " + dto.getParentId()));
                     entity.setParent(parent);
                 }
-                
+
                 // Save
                 categoryRepository.save(entity);
             }
@@ -101,7 +101,7 @@ public class CategoryServiceImpl extends BaseServiceImpl<CategoryEntity, Categor
         List<CategoryEntity> rootCategories = categoryRepository.findByParentIsNull();
         return DataUtil.convertList(rootCategories, entity -> {
             CategoryResponse response = modelMapper.map(entity, CategoryResponse.class);
-            response.setCategoryId(entity.getId());
+            response.setId(entity.getId());
             return response;
         });
     }
@@ -119,7 +119,7 @@ public class CategoryServiceImpl extends BaseServiceImpl<CategoryEntity, Categor
         List<CategoryEntity> children = categoryRepository.findByParentId(parentId);
         return DataUtil.convertList(children, entity -> {
             CategoryResponse response = modelMapper.map(entity, CategoryResponse.class);
-            response.setCategoryId(entity.getId());
+            response.setId(entity.getId());
             if (entity.getParent() != null) {
                 response.setParentId(entity.getParent().getId());
                 response.setParentName(entity.getParent().getName());
@@ -133,13 +133,13 @@ public class CategoryServiceImpl extends BaseServiceImpl<CategoryEntity, Categor
      */
     private CategoryResponse buildCategoryTree(CategoryEntity entity) {
         CategoryResponse response = modelMapper.map(entity, CategoryResponse.class);
-        response.setCategoryId(entity.getId());
-        
+        response.setId(entity.getId());
+
         if (entity.getParent() != null) {
             response.setParentId(entity.getParent().getId());
             response.setParentName(entity.getParent().getName());
         }
-        
+
         // Recursively build children
         List<CategoryEntity> children = categoryRepository.findByParentId(entity.getId());
         if (children != null && !children.isEmpty()) {
@@ -147,7 +147,7 @@ public class CategoryServiceImpl extends BaseServiceImpl<CategoryEntity, Categor
                     .map(this::buildCategoryTree)
                     .collect(Collectors.toList()));
         }
-        
+
         return response;
     }
 }
