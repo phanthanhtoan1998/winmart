@@ -3,6 +3,7 @@ package com.winmart.userservice.service.impl;
 import com.winmart.common.service.impl.BaseServiceImpl;
 import com.winmart.userservice.dto.request.CreateInvoiceRequest;
 import com.winmart.userservice.dto.response.InvoiceResponse;
+import com.winmart.userservice.dto.response.UserOrderCountResponse;
 import com.winmart.userservice.entity.InvoiceEntity;
 import com.winmart.userservice.repository.InvoiceRepository;
 import com.winmart.userservice.service.InvoiceService;
@@ -38,28 +39,28 @@ public class InvoiceServiceImpl extends BaseServiceImpl<InvoiceEntity, InvoiceRe
             } else {
                 dto = objectMapper.convertValue(data, CreateInvoiceRequest.class);
             }
-            
+
             // Convert to Entity
             InvoiceEntity entity = modelMapper.map(dto, InvoiceEntity.class);
-            
+
             // Save invoice
             InvoiceEntity savedEntity = invoiceRepository.save(entity);
-            
+
             // Tích điểm nếu có số điện thoại khách hàng
             if (dto.getCustomerPhone() != null && !dto.getCustomerPhone().trim().isEmpty()) {
                 try {
                     // Tính điểm dựa trên tổng tiền (ví dụ: 1 điểm cho mỗi 10,000 VND)
                     BigDecimal pointsToAdd = dto.getTotalAmount().divide(new BigDecimal("10000"), 0, RoundingMode.DOWN);
                     Integer points = pointsToAdd.intValue();
-                    
+
                     if (points > 0) {
                         ResponseEntity<String> pointsResponse = userService.addPointsByPhoneOrCreateUser(
                                 dto.getCustomerPhone(), dto.getCustomerName(), points);
                         if (pointsResponse.getStatusCode().is2xxSuccessful()) {
-                            log.info("Points added successfully for customer phone {}: {} points", 
+                            log.info("Points added successfully for customer phone {}: {} points",
                                     dto.getCustomerPhone(), points);
                         } else {
-                            log.warn("Failed to add points for customer phone {}: {}", 
+                            log.warn("Failed to add points for customer phone {}: {}",
                                     dto.getCustomerPhone(), pointsResponse.getBody());
                         }
                     }
@@ -70,11 +71,36 @@ public class InvoiceServiceImpl extends BaseServiceImpl<InvoiceEntity, InvoiceRe
             } else {
                 log.info("No customer phone provided, skipping points addition for invoice {}", savedEntity.getId());
             }
-            
+
             return modelMapper.map(savedEntity, InvoiceResponse.class);
         } catch (Exception e) {
             log.error("Error saving invoice from object: ", e);
             throw new RuntimeException("Error saving invoice: " + e.getMessage());
         }
     }
+
+    @Override
+    public UserOrderCountResponse getUserOrderCount(Long userId) {
+        try {
+            // Get user info
+
+            // Count orders by status
+            Long totalOrders = invoiceRepository.countByUserId(userId);
+            Long pendingOrders = invoiceRepository.countByUserIdAndStatus(userId, InvoiceEntity.InvoiceStatus.PENDING);
+            Long paidOrders = invoiceRepository.countByUserIdAndStatus(userId, InvoiceEntity.InvoiceStatus.PAID);
+            Long cancelledOrders = invoiceRepository.countByUserIdAndStatus(userId, InvoiceEntity.InvoiceStatus.CANCELLED);
+
+            return UserOrderCountResponse.builder()
+                    .userId(userId)
+                    .totalOrders(totalOrders)
+                    .pendingOrders(pendingOrders)
+                    .paidOrders(paidOrders)
+                    .cancelledOrders(cancelledOrders)
+                    .build();
+        } catch (Exception e) {
+            log.error("Error getting user order count for userId {}: {}", userId, e.getMessage());
+            throw new RuntimeException("Error getting user order count: " + e.getMessage());
+        }
+    }
+
 }

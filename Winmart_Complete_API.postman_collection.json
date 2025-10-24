@@ -971,6 +971,67 @@
 			"name": "Invoices",
 			"item": [
 				{
+					"name": "Get User Order Count",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/invoices/user/{{userId}}/order-count",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"invoices",
+								"user",
+								"{{userId}}",
+								"order-count"
+							]
+						},
+						"description": "Get order count for a specific user"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Multiple Users Order Counts",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[1, 2, 3, 4, 5]"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/invoices/users/order-counts",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"invoices",
+								"users",
+								"order-counts"
+							]
+						},
+						"description": "Get order counts for multiple users (send array of user IDs)"
+					},
+					"response": []
+				},
+				{
 					"name": "Create Invoice (BaseController)",
 					"request": {
 						"method": "POST",
