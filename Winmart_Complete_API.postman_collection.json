@@ -1013,7 +1013,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "[1, 2, 3, 4, 5]"
+							"raw": "{\n  \"userIds\": [1, 2, 3, 4, 5]\n}"
 						},
 						"url": {
 							"raw": "{{base_url}}/api/invoices/users/order-counts",
@@ -1027,7 +1027,7 @@
 								"order-counts"
 							]
 						},
-						"description": "Get order counts for multiple users (send array of user IDs)"
+						"description": "Get order counts for multiple users using UserOrderCountRequest DTO"
 					},
 					"response": []
 				},

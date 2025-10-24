@@ -9,4 +9,5 @@ import java.util.List;
 
 public interface InvoiceService extends BaseService<InvoiceEntity, InvoiceResponse> {
     UserOrderCountResponse getUserOrderCount(Long userId);
+    List<UserOrderCountResponse> getUserOrderCounts(List<Long> userIds);
 }

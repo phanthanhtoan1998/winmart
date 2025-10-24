@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -101,6 +102,13 @@ public class InvoiceServiceImpl extends BaseServiceImpl<InvoiceEntity, InvoiceRe
             log.error("Error getting user order count for userId {}: {}", userId, e.getMessage());
             throw new RuntimeException("Error getting user order count: " + e.getMessage());
         }
+    }
+
+    @Override
+    public List<UserOrderCountResponse> getUserOrderCounts(List<Long> userIds) {
+        return userIds.stream()
+                .map(this::getUserOrderCount)
+                .toList();
     }
 
 }
