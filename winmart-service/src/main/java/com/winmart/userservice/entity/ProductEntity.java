@@ -3,7 +3,8 @@ package com.winmart.userservice.entity;
 import com.winmart.common.model.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.Formula;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -47,8 +48,14 @@ public class ProductEntity extends BaseEntity {
     @Column(name = "category_id")
     private Long categoryId;
 
-    // Trường categoryName để hiển thị tên category (sử dụng @Formula)
-    @Formula("(SELECT c.name FROM categories c WHERE c.id = category_id)")
-    private String categoryName;
+    // Relationship với Category để lấy tên category
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id", insertable = false, updatable = false)
+    private CategoryEntity category;
+
+    // Trường categoryName để hiển thị tên category
+    public String getCategoryName() {
+        return category != null ? category.getName() : null;
+    }
 
 }
