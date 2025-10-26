@@ -48,8 +48,8 @@ COPY --from=build /app/winmart-service/target/winmart-service.jar app.jar
 
 # Create uploads directory with proper permissions
 RUN mkdir -p /app/uploads && \
-    chown -R spring:spring /app/uploads && \
-    chmod -R 755 /app/uploads
+    chown -R spring:spring /app && \
+    chmod -R 777 /app/uploads
 
 # Change ownership of the jar file
 RUN chown spring:spring app.jar

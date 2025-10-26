@@ -37,6 +37,14 @@ public class FileUploadServiceImpl implements FileUploadService {
             // Create upload directory if it doesn't exist
             Path uploadPath = Paths.get(uploadDir, category);
             log.info("Creating directory: {}", uploadPath);
+            
+            // Check if parent directory exists and create it if needed
+            Path parentDir = uploadPath.getParent();
+            if (parentDir != null && !Files.exists(parentDir)) {
+                log.info("Creating parent directory: {}", parentDir);
+                Files.createDirectories(parentDir);
+            }
+            
             Files.createDirectories(uploadPath);
             log.info("Directory created successfully: {}", uploadPath);
 
@@ -65,7 +73,10 @@ public class FileUploadServiceImpl implements FileUploadService {
                     .build();
 
         } catch (IOException e) {
-            log.error("Error uploading file: {}", e.getMessage());
+            log.error("Error uploading file: {}", e.getMessage(), e);
+            throw new RuntimeException("Failed to upload file: " + e.getMessage());
+        } catch (Exception e) {
+            log.error("Unexpected error uploading file: {}", e.getMessage(), e);
             throw new RuntimeException("Failed to upload file: " + e.getMessage());
         }
     }
