@@ -1,6 +1,7 @@
 package com.winmart.userservice.dto.request;
 
 import com.winmart.common.dto.BaseDto;
+import com.winmart.userservice.entity.PaymentEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,7 +16,8 @@ import java.math.BigDecimal;
 public class CreatePaymentRequest extends BaseDto {
     private Long invoiceId;
     private BigDecimal amount;
-    private String paymentMethod;
+    private PaymentEntity.PaymentMethod paymentMethod;
     private String qrCodeUrl;
     private String paymentStatus;
+
 }

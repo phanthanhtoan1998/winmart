@@ -26,7 +26,7 @@ public class FileUploadServiceImpl implements FileUploadService {
 
     @Value("${file.upload-dir:/home/toan/Documents/winmart/uploads}")
     private String uploadDir;
-    
+
     @Value("${file.base-url:http://localhost:3333/api/files/download?fileName=}")
     private String baseUrl;
 
