@@ -24,7 +24,7 @@ import java.util.UUID;
 @Service
 public class FileUploadServiceImpl implements FileUploadService {
 
-    @Value("${uploads}")
+    @Value("uploads")
     private String uploadDir;
 
     @Override
