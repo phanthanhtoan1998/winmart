@@ -42,6 +42,8 @@ services:
       
       # JVM options
       JAVA_OPTS: "-Xms512m -Xmx1024m"
+    volumes:
+      - /home/azureuser/winmart/uploads:/app/uploads
     networks:
       - winmart-network
     healthcheck:
