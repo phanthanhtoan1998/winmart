@@ -3,6 +3,7 @@ package com.winmart.userservice.entity;
 import com.winmart.common.model.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Formula;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -16,9 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 @Table(name = "products")
 public class ProductEntity extends BaseEntity {
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id")
-    private CategoryEntity category;
+
 
     @Column(name = "name", nullable = false, length = 150)
     private String name;
@@ -43,4 +42,13 @@ public class ProductEntity extends BaseEntity {
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<InventoryLogEntity> inventoryLogs;
+
+    // Trường categoryId để ModelMapper có thể map
+    @Column(name = "category_id")
+    private Long categoryId;
+
+    // Trường categoryName để hiển thị tên category (sử dụng @Formula)
+    @Formula("(SELECT c.name FROM categories c WHERE c.id = category_id)")
+    private String categoryName;
+
 }

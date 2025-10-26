@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 public class ProductResponse extends BaseDto {
-    private Long productId;
+    private Long id;
     private Long categoryId;
     private String categoryName;
     private String name;

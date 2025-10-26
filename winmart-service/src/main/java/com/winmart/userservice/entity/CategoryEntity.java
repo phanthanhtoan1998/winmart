@@ -28,6 +28,6 @@ public class CategoryEntity extends BaseEntity {
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<CategoryEntity> children;
 
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<ProductEntity> products;
+//    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//    private List<ProductEntity> products;
 }
