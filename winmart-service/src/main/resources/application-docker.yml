@@ -35,6 +35,11 @@ spring:
     virtual:
       enabled: true
 
+# File upload configuration
+file:
+  upload-dir: /home/azureuser/winmart/uploads
+  base-url: http://172.188.81.232:3333/api/files/download?fileName=
+
 # JWT Configuration
 jwt:
   secret: ${JWT_SECRET:winmart-secret-key-for-jwt-token-generation-must-be-at-least-256-bits-long}

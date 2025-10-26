@@ -24,8 +24,11 @@ import java.util.UUID;
 @Service
 public class FileUploadServiceImpl implements FileUploadService {
 
-    @Value("${file.upload-dir:uploads}")
+    @Value("${file.upload-dir:/home/toan/Documents/winmart/uploads}")
     private String uploadDir;
+    
+    @Value("${file.base-url:http://localhost:3333/api/files/download?fileName=}")
+    private String baseUrl;
 
     @Override
     public FileUploadResponseDTO uploadFile(MultipartFile file, String category) {
@@ -51,7 +54,7 @@ public class FileUploadServiceImpl implements FileUploadService {
                     .fileName(uniqueFileName)
                     .originalFileName(originalFileName)
                     .filePath(filePath.toString())
-                    .fileUrl(category + "/" + uniqueFileName)
+                    .fileUrl(baseUrl + uniqueFileName)
                     .category(category)
                     .fileSize(file.getSize())
                     .contentType(file.getContentType())
@@ -80,9 +83,18 @@ public class FileUploadServiceImpl implements FileUploadService {
     @Override
     public Resource downloadFile(String fileName) {
         // Search for file in all category directories
-        Path filePath = Paths.get("./uploads").resolve(fileName);
-        if (filePath.toFile().exists()) {
-            return new FileSystemResource(filePath.toFile());
+        try {
+            Path uploadPath = Paths.get(uploadDir);
+            if (Files.exists(uploadPath)) {
+                return Files.walk(uploadPath)
+                        .filter(Files::isRegularFile)
+                        .filter(path -> path.getFileName().toString().equals(fileName))
+                        .findFirst()
+                        .map(path -> new FileSystemResource(path.toFile()))
+                        .orElse(null);
+            }
+        } catch (IOException e) {
+            log.error("Error searching for file: {}", e.getMessage());
         }
         return null;
     }
@@ -105,7 +117,7 @@ public class FileUploadServiceImpl implements FileUploadService {
                                         .fileName(fileName)
                                         .originalFileName(fileName) // In real implementation, you might store original name
                                         .filePath(path.toString())
-                                        .fileUrl("/api/files/download?fileName=" + fileName)
+                                        .fileUrl(baseUrl + fileName)
                                         .category(category)
                                         .fileSize(Files.size(path))
                                         .contentType(Files.probeContentType(path))
