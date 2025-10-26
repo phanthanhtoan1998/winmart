@@ -46,8 +46,10 @@ RUN addgroup -S spring && adduser -S spring -G spring
 # Spring Boot creates both .jar and .jar.original, we need the repackaged one
 COPY --from=build /app/winmart-service/target/winmart-service.jar app.jar
 
-# Create uploads directory
-RUN mkdir -p /app/uploads && chown spring:spring /app/uploads
+# Create uploads directory with proper permissions
+RUN mkdir -p /app/uploads && \
+    chown -R spring:spring /app/uploads && \
+    chmod -R 755 /app/uploads
 
 # Change ownership of the jar file
 RUN chown spring:spring app.jar

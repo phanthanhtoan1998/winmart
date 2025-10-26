@@ -33,9 +33,12 @@ public class FileUploadServiceImpl implements FileUploadService {
     @Override
     public FileUploadResponseDTO uploadFile(MultipartFile file, String category) {
         try {
+            log.info("Upload directory: {}", uploadDir);
             // Create upload directory if it doesn't exist
             Path uploadPath = Paths.get(uploadDir, category);
+            log.info("Creating directory: {}", uploadPath);
             Files.createDirectories(uploadPath);
+            log.info("Directory created successfully: {}", uploadPath);
 
             // Generate unique filename
             String originalFileName = file.getOriginalFilename();
