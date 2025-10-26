@@ -55,7 +55,14 @@ public class ProductEntity extends BaseEntity {
 
     // Trường categoryName để hiển thị tên category
     public String getCategoryName() {
-        return category != null ? category.getName() : null;
+        // Check categoryId trước, nếu null hoặc category null thì return null
+        if (categoryId == null || category == null) {
+            return null;
+        }
+        return category.getName();
     }
 
+    public Long getCategoryParentId() {
+        return category != null && category.getParent() != null ? category.getParent().getId() : null;
+    }
 }
