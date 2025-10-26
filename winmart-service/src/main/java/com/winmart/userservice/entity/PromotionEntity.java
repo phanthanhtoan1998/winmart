@@ -27,6 +27,9 @@ public class PromotionEntity extends BaseEntity {
     @Column(name = "end_date")
     private LocalDate endDate;
 
+    @Column(name = "product_id")
+    private Long productId;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "status", length = 20)
     private PromotionStatus status = PromotionStatus.ACTIVE;

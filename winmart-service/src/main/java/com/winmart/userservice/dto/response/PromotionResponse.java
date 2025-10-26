@@ -14,10 +14,11 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Builder
 public class PromotionResponse extends BaseDto {
-    private Long promoId;
+    private Long id;
     private String code;
     private BigDecimal discountPercent;
     private LocalDate startDate;
     private LocalDate endDate;
     private String status;
+    private Long productId;
 }
